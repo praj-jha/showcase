@@ -3,11 +3,9 @@ import { useInView, useMotionValue, useSpring } from 'framer-motion';
 
 export function NumberTicker({
 	value,
-	duration = 2,
 	className = '',
 }: {
 	value: number;
-	duration?: number;
 	className?: string;
 }) {
 	const ref = useRef<HTMLSpanElement>(null);

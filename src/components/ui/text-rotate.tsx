@@ -225,9 +225,9 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
 								>
 									{wordObj.characters.map((char: string, charIndex: number) => (
 										<motion.span
-											initial={initial}
-											animate={animate}
-											exit={exit}
+											initial={initial as any}
+											animate={animate as any}
+											exit={exit as any}
 											key={charIndex}
 											transition={{
 												...transition,
@@ -260,5 +260,6 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
 TextRotate.displayName = 'TextRotate';
 
 export { TextRotate };
+
 
 

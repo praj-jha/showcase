@@ -10,7 +10,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		scene: THREE.Scene;
 		camera: THREE.PerspectiveCamera;
 		renderer: THREE.WebGLRenderer;
-		particles: THREE.Points[];
+		points: THREE.Points;
 		animationId: number;
 		count: number;
 	} | null>(null);
@@ -43,10 +43,9 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		renderer.setClearColor(scene.fog.color, 0);
 		containerRef.current.appendChild(renderer.domElement);
 
-		// Create particles
-		const particles: THREE.Points[] = [];
-		const positions: number[] = [];
-		const colors: number[] = [];
+	// Create particles
+	const positions: number[] = [];
+	const colors: number[] = [];
 
 		// Create geometry for all particles
 		const geometry = new THREE.BufferGeometry();
@@ -83,12 +82,12 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		const points = new THREE.Points(geometry, material);
 		scene.add(points);
 
-		let count = 0;
-		let animationId: number;
+	let count = 0;
+	let animationId: number = 0;
 
-		// Animation function
-		const animate = () => {
-			animationId = requestAnimationFrame(animate);
+	// Animation function
+	const animate = () => {
+		animationId = requestAnimationFrame(animate);
 
 			const positionAttribute = geometry.attributes.position;
 			const positions = positionAttribute.array as Float32Array;
@@ -126,15 +125,15 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		// Start animation
 		animate();
 
-		// Store references
-		sceneRef.current = {
-			scene,
-			camera,
-			renderer,
-			particles: [points],
-			animationId,
-			count,
-		};
+	// Store references
+	sceneRef.current = {
+		scene,
+		camera,
+		renderer,
+		points,
+		animationId,
+		count,
+	};
 
 		// Cleanup function
 		return () => {
@@ -174,5 +173,6 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		/>
 	);
 }
+
 
 
