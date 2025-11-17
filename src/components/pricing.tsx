@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { RegistrationForm } from './registration-form';
 
 export const pricingPlans = [
 	{
@@ -92,6 +94,13 @@ export const pricingPlans = [
 export function Pricing() {
 	// Show only first 3 passes (Standard, Premium, Business)
 	const featuredPasses = pricingPlans.slice(0, 3);
+	const [isFormOpen, setIsFormOpen] = useState(false);
+	const [selectedPass, setSelectedPass] = useState<{ name: string; price: string } | null>(null);
+
+	const handlePassClick = (plan: { name: string; price: string }) => {
+		setSelectedPass(plan);
+		setIsFormOpen(true);
+	};
 
 	return (
 		<section className="relative py-24 px-6">
@@ -191,6 +200,7 @@ export function Pricing() {
 
 									{/* CTA Button */}
 									<button
+										onClick={() => handlePassClick(plan)}
 										className={`mb-8 w-full rounded-xl px-6 py-3.5 text-sm font-medium transition-all duration-300 ${plan.buttonStyle}`}
 									>
 										{plan.buttonText}
@@ -286,6 +296,16 @@ export function Pricing() {
 					</p>
 				</motion.div>
 			</div>
+
+			{/* Registration Form Modal */}
+			{selectedPass && (
+				<RegistrationForm
+					isOpen={isFormOpen}
+					onClose={() => setIsFormOpen(false)}
+					selectedPass={selectedPass}
+					allPasses={pricingPlans}
+				/>
+			)}
 		</section>
 	);
 }

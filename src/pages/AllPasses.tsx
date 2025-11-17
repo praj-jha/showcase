@@ -1,15 +1,24 @@
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { pricingPlans } from '@/components/pricing';
 import { DottedSurface } from '@/components/ui/dotted-surface';
+import { RegistrationForm } from '@/components/registration-form';
 
 export function AllPasses() {
+	const [isFormOpen, setIsFormOpen] = useState(false);
+	const [selectedPass, setSelectedPass] = useState<{ name: string; price: string } | null>(null);
+
 	// Scroll to top when component mounts
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
+
+	const handlePassClick = (plan: { name: string; price: string }) => {
+		setSelectedPass(plan);
+		setIsFormOpen(true);
+	};
 
 	return (
 		<main className="relative min-h-screen">
@@ -127,6 +136,7 @@ export function AllPasses() {
 
 											{/* CTA Button */}
 											<button
+												onClick={() => handlePassClick(plan)}
 												className={`mb-8 w-full rounded-xl px-6 py-3.5 text-sm font-medium transition-all duration-300 ${plan.buttonStyle}`}
 											>
 												{plan.buttonText}
@@ -209,6 +219,16 @@ export function AllPasses() {
 					</div>
 				</section>
 			</div>
+
+			{/* Registration Form Modal */}
+			{selectedPass && (
+				<RegistrationForm
+					isOpen={isFormOpen}
+					onClose={() => setIsFormOpen(false)}
+					selectedPass={selectedPass}
+					allPasses={pricingPlans}
+				/>
+			)}
 		</main>
 	);
 }
